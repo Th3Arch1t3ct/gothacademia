@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beats</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        // Generate random background color immediately
+        function getRandomHexColor() {
+            return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+        }
+        function getContrastingColor(hexColor) {
+            const r = parseInt(hexColor.substr(1, 2), 16);
+            const g = parseInt(hexColor.substr(3, 2), 16);
+            const b = parseInt(hexColor.substr(5, 2), 16);
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+            return brightness > 128 ? '#000000' : '#ffffff';
+        }
+        const bgColor = getRandomHexColor();
+        const txtColor = getContrastingColor(bgColor);
+        document.write('<style>body, .container { background-color: ' + bgColor + ' !important; color: ' + txtColor + ' !important; }</style>');
+        document.write('<style>.page-header { position: fixed; top: 1rem; left: 50%; transform: translateX(-50%); text-align: center; z-index: 100; color: ' + txtColor + '; } .page-header h1 { font-size: 1.5rem; font-weight: 600; margin: 0; } </style>');
+    </script>
+</head>
+<body>
+    <div class="page-header">
+        <h1>BEATS</h1>
+    </div>
+    <div class="container" id="mainContainer">
+        <div class="icons-wrapper" id="iconsWrapper">
+            <!-- Content coming soon -->
+        </div>
+    </div>
+</body>
+</html>

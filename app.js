@@ -2,16 +2,30 @@
 let icons = [
     {
         id: 1,
-        title: "Music",
+        title: "Finished Songs",
         image: "public/icons/Yeezy.png",
-        link: "music-eras.html",
+        link: "finished-songs.html",
         position: { x: 0, y: 0 },
     },
     {
         id: 2,
-        title: "The Ten",
+        title: "Songs in Progress",
         image: "public/icons/avatar.svg",
-        link: "the-ten.html",
+        link: "songs-in-progress.html",
+        position: { x: 0, y: 0 },
+    },
+    {
+        id: 3,
+        title: "BEATS",
+        image: "public/icons/r2d2.gif",
+        link: "beats.html",
+        position: { x: 0, y: 0 },
+    },
+    {
+        id: 4,
+        title: "TRACK LIST",
+        image: "public/icons/Yeezy.png",
+        link: "track-list.html",
         position: { x: 0, y: 0 },
     },
 ];
@@ -23,14 +37,19 @@ function calculateResponsivePositions() {
     const centerX = viewportWidth / 2;
     const centerY = viewportHeight / 2;
     
-    // Mobile layout
+    // Mobile layout - stacked vertically
     if (viewportWidth <= 768) {
-        icons[0].position = { x: centerX - 80, y: centerY - 150 };
-        icons[1].position = { x: centerX - 80, y: centerY + 50 };
+        icons[0].position = { x: centerX - 80, y: centerY - 300 };
+        icons[1].position = { x: centerX - 80, y: centerY - 100 };
+        icons[2].position = { x: centerX - 80, y: centerY + 100 };
+        icons[3].position = { x: centerX - 80, y: centerY + 300 };
     } else {
-        // Desktop layout
-        icons[0].position = { x: centerX - 200, y: centerY - 100 };
-        icons[1].position = { x: centerX + 50, y: centerY - 50 };
+        // Desktop layout - 2x2 grid
+        const spacing = 200;
+        icons[0].position = { x: centerX - spacing - 80, y: centerY - spacing/2 - 80 };
+        icons[1].position = { x: centerX + spacing - 80, y: centerY - spacing/2 - 80 };
+        icons[2].position = { x: centerX - spacing - 80, y: centerY + spacing/2 - 80 };
+        icons[3].position = { x: centerX + spacing - 80, y: centerY + spacing/2 - 80 };
     }
 }
 
