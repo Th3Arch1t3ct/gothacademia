@@ -3,8 +3,8 @@ let icons = [
     {
         id: 1,
         title: "DMC",
-        image: "public/icons/tide.PNG",
-        link: "music.html",
+        image: "public/icons/r2d2.gif",
+        link: "DMC.html",
         position: { x: 0, y: 0 },
     },
 ];
