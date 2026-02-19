@@ -2,24 +2,17 @@
 let icons = [
     {
         id: 1,
-        title: "Music",
+        title: "DMC Demos",
         image: "icons/Yeezy.png",
         link: "/music",
         position: { x: 800, y: 100 },
     },
     {
-        id: 4,
-        title: "Wiki",
+        id: 2,
+        title: "The Ten",
         image: "icons/About.png",
         link: "/about",
         position: { x: 730, y: 300 },
-    },
-    {
-        id: 5,
-        title: "Contact",
-        image: "icons/contact.png",
-        link: "/contact",
-        position: { x: 920, y: 350 },
     },
 ];
 
