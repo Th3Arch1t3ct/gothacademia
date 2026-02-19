@@ -23,8 +23,28 @@ let hasMoved = false;
 
 // Get container element
 const containerRef = document.getElementById('iconsWrapper');
-const backgroundColor = '#ffffff';
-const textColor = '#000000';
+
+// Generate random hex color
+function getRandomHexColor() {
+    return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+}
+
+// Calculate contrasting text color (black or white) based on background brightness
+function getContrastingColor(hexColor) {
+    // Convert hex to RGB
+    const r = parseInt(hexColor.substr(1, 2), 16);
+    const g = parseInt(hexColor.substr(3, 2), 16);
+    const b = parseInt(hexColor.substr(5, 2), 16);
+    
+    // Calculate brightness (YIQ formula)
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    
+    // Return black for bright backgrounds, white for dark backgrounds
+    return brightness > 128 ? '#000000' : '#ffffff';
+}
+
+const backgroundColor = getRandomHexColor();
+const textColor = getContrastingColor(backgroundColor);
 
 // Set background color and text color
 document.addEventListener('DOMContentLoaded', () => {

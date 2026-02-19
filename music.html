@@ -132,6 +132,38 @@
     </div>
 
     <script>
+        // Generate random hex color
+        function getRandomHexColor() {
+            return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+        }
+
+        // Calculate contrasting text color (black or white) based on background brightness
+        function getContrastingColor(hexColor) {
+            // Convert hex to RGB
+            const r = parseInt(hexColor.substr(1, 2), 16);
+            const g = parseInt(hexColor.substr(3, 2), 16);
+            const b = parseInt(hexColor.substr(5, 2), 16);
+            
+            // Calculate brightness (YIQ formula)
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+            
+            // Return black for bright backgrounds, white for dark backgrounds
+            return brightness > 128 ? '#000000' : '#ffffff';
+        }
+
+        // Set random background on page load
+        const bgColor = getRandomHexColor();
+        const txtColor = getContrastingColor(bgColor);
+        document.querySelector('.music-container').style.background = bgColor;
+        document.body.style.color = txtColor;
+        
+        // Update all text colors
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.music-header h1, .music-header p, .music-card-title, .music-card-artist, .music-card-year').forEach(el => {
+                el.style.color = txtColor;
+            });
+        });
+
         // Sample music data
         const musicData = [
             {
