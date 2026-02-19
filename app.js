@@ -38,6 +38,8 @@ let activeIcon = null;
 let startPos = { x: 0, y: 0 };
 let isDragging = false;
 let hasMoved = false;
+let touchStartTime = 0;
+let totalMovement = 0;
 
 // Get container element
 const containerRef = document.getElementById('iconsWrapper');
@@ -121,11 +123,13 @@ function handleMouseDown(id, e) {
 
 // Handle touch start for mobile
 function handleTouchStart(id, e) {
-    e.preventDefault();
+    // Don't prevent default immediately - let browser decide if it's a tap
     activeIcon = id;
     startPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-    isDragging = true;
+    isDragging = false; // Don't set to true yet
     hasMoved = false;
+    touchStartTime = Date.now();
+    totalMovement = 0;
 
     const iconElement = document.getElementById(`icon-${id}`);
     if (iconElement) {
@@ -172,14 +176,20 @@ function handleMouseMove(e) {
 
 // Handle touch move for mobile
 function handleTouchMove(e) {
-    if (activeIcon !== null && isDragging) {
-        e.preventDefault();
+    if (activeIcon !== null) {
         const deltaX = e.touches[0].clientX - startPos.x;
         const deltaY = e.touches[0].clientY - startPos.y;
-
-        if (Math.abs(deltaX) > 15 || Math.abs(deltaY) > 15) {
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        totalMovement += distance;
+        
+        // Only start dragging if moved more than 5px
+        if (totalMovement > 5) {
+            isDragging = true;
             hasMoved = true;
+            e.preventDefault(); // Now prevent scrolling
         }
+        
+        if (isDragging) {
 
         icons = icons.map(icon => {
             if (icon.id === activeIcon) {
@@ -204,7 +214,8 @@ function handleTouchMove(e) {
             }
         }
 
-        startPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            startPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        }
     }
 }
 
@@ -218,6 +229,28 @@ function handleMouseUp() {
     }
     activeIcon = null;
     isDragging = false;
+}
+
+// Handle touch end for mobile navigation
+function handleTouchEnd(e) {
+    if (activeIcon !== null && !hasMoved && totalMovement < 5) {
+        // This was a tap, not a drag - navigate
+        const icon = icons.find(i => i.id === activeIcon);
+        if (icon) {
+            window.location.href = icon.link;
+        }
+    }
+    
+    if (activeIcon !== null) {
+        const iconElement = document.getElementById(`icon-${activeIcon}`);
+        if (iconElement) {
+            iconElement.classList.remove('dragging');
+        }
+    }
+    activeIcon = null;
+    isDragging = false;
+    hasMoved = false;
+    totalMovement = 0;
 }
 
 // Handle click on icon (for navigation)
@@ -234,5 +267,5 @@ function attachEventListeners() {
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
-    window.addEventListener('touchend', handleMouseUp);
+    window.addEventListener('touchend', handleTouchEnd);
 }
