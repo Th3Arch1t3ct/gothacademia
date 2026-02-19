@@ -1,30 +1,39 @@
+// Get the base path (parent directory of current page)
+const getBasePath = () => {
+    const path = window.location.pathname;
+    const directory = path.substring(0, path.lastIndexOf('/'));
+    return directory.substring(0, directory.lastIndexOf('/')) + '/';
+};
+
+const basePath = getBasePath();
+
 // State - positions will be calculated responsively
 let icons = [
     {
         id: 1,
         title: "Music/Videos",
-        image: "../public/icons/folderzip.png",
+        image: basePath + "public/icons/folderzip.png",
         link: "finished-songs.html",
         position: { x: 0, y: 0 },
     },
     {
         id: 2,
         title: "Songs in Progress",
-        image: "../public/icons/folder-icon.png",
+        image: basePath + "public/icons/folder-icon.png",
         link: "songs-in-progress.html",
         position: { x: 0, y: 0 },
     },
     {
         id: 3,
         title: "Beats",
-        image: "../public/icons/imac.gif",
+        image: basePath + "public/icons/imac.gif",
         link: "beats.html",
         position: { x: 0, y: 0 },
     },
     {
         id: 4,
         title: "Track List",
-        image: "../public/icons/newfolder.png",
+        image: basePath + "public/icons/newfolder.png",
         link: "track-list.html",
         position: { x: 0, y: 0 },
     },
@@ -116,21 +125,39 @@ function renderIcons() {
         iconDiv.style.top = `${icon.position.y}px`;
         iconDiv.dataset.iconId = icon.id.toString();
 
-        iconDiv.innerHTML = `
-            <div class="icon-content">
-                <div class="icon-image-wrapper">
-                    <img 
-                        src="${icon.image}" 
-                        alt="${icon.title}"
-                        class="icon-image"
-                        draggable="false"
-                    />
-                </div>
-                <span class="icon-title" style="color: ${textColor}">
-                    ${icon.title}
-                </span>
-            </div>
-        `;
+        // Create image element with error handling
+        const imgElement = document.createElement('img');
+        imgElement.src = icon.image;
+        imgElement.alt = icon.title;
+        imgElement.className = 'icon-image';
+        imgElement.draggable = false;
+        
+        // Add error handler for debugging
+        imgElement.onerror = function() {
+            console.error(`Failed to load image: ${icon.image}`);
+            console.log(`Current location: ${window.location.href}`);
+            console.log(`Attempted path: ${this.src}`);
+        };
+        
+        imgElement.onload = function() {
+            console.log(`Successfully loaded: ${icon.image}`);
+        };
+
+        const iconContent = document.createElement('div');
+        iconContent.className = 'icon-content';
+        
+        const iconImageWrapper = document.createElement('div');
+        iconImageWrapper.className = 'icon-image-wrapper';
+        iconImageWrapper.appendChild(imgElement);
+        
+        const iconTitle = document.createElement('span');
+        iconTitle.className = 'icon-title';
+        iconTitle.style.color = textColor;
+        iconTitle.textContent = icon.title;
+        
+        iconContent.appendChild(iconImageWrapper);
+        iconContent.appendChild(iconTitle);
+        iconDiv.appendChild(iconContent);
 
         // Add mouse down event
         iconDiv.addEventListener('mousedown', (e) => handleMouseDown(icon.id, e));
