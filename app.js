@@ -5,7 +5,7 @@ let icons = [
         title: "Music",
         image: "icons/Yeezy.png",
         link: "music.html",
-        position: { x: 800, y: 100 },
+        position: { x: 500, y: 100 },
     },
     {
         id: 2,
