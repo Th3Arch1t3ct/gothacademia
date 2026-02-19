@@ -3,14 +3,14 @@ let icons = [
     {
         id: 1,
         title: "Music",
-        image: "icons/Yeezy.png",
+        image: "public/icons/Yeezy.png",
         link: "music-eras.html",
         position: { x: 0, y: 0 },
     },
     {
         id: 2,
         title: "The Ten",
-        image: "icons/About.png",
+        image: "public/icons/skull.png",
         link: "about.html",
         position: { x: 0, y: 0 },
     },
