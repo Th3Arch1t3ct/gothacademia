@@ -3,28 +3,28 @@ let icons = [
     {
         id: 1,
         title: "Finished Songs",
-        image: "public/icons/skull.png",
+        image: "public/icons/folderzip.png",
         link: "DMC/finished-songs.html",
         position: { x: 0, y: 0 },
     },
     {
         id: 2,
         title: "Songs in Progress",
-        image: "public/icons/jester.gif",
+        image: "public/icons/folder-icon.gif",
         link: "DMC/songs-in-progress.html",
         position: { x: 0, y: 0 },
     },
     {
         id: 3,
         title: "BEATS",
-        image: "public/icons/tide.PNG",
+        image: "public/icons/imac.gif",
         link: "DMC/beats.html",
         position: { x: 0, y: 0 },
     },
     {
         id: 4,
         title: "TRACK LIST",
-        image: "public/icons/r2d2.gif",
+        image: "public/icons/newfolder.png",
         link: "DMC/track-list.html",
         position: { x: 0, y: 0 },
     },
@@ -37,12 +37,32 @@ function calculateResponsivePositions() {
     const centerX = viewportWidth / 2;
     const centerY = viewportHeight / 2;
     
-    // Mobile layout
+    // Mobile layout (portrait mode for iOS)
     if (viewportWidth <= 768) {
-        icons[0].position = { x: centerX - 80, y: centerY - 250 };
-        icons[1].position = { x: centerX - 80, y: centerY - 80 };
-        icons[2].position = { x: centerX - 80, y: centerY + 90 };
-        icons[3].position = { x: centerX - 80, y: centerY + 260 };
+        // Account for header at top (approx 5rem)
+        const topOffset = 80; // Header space
+        const availableHeight = viewportHeight - topOffset;
+        const iconHeight = 160; // Approximate icon height with title
+        const totalIconsHeight = iconHeight * 4;
+        const spacing = (availableHeight - totalIconsHeight) / 5;
+        
+        // Center icons horizontally and distribute vertically
+        icons[0].position = { 
+            x: centerX - 80, 
+            y: topOffset + spacing + (iconHeight + spacing) * 0 
+        };
+        icons[1].position = { 
+            x: centerX - 80, 
+            y: topOffset + spacing + (iconHeight + spacing) * 1 
+        };
+        icons[2].position = { 
+            x: centerX - 80, 
+            y: topOffset + spacing + (iconHeight + spacing) * 2 
+        };
+        icons[3].position = { 
+            x: centerX - 80, 
+            y: topOffset + spacing + (iconHeight + spacing) * 3 
+        };
     } else {
         // Desktop layout - 2x2 grid
         icons[0].position = { x: centerX - 220, y: centerY - 150 };
