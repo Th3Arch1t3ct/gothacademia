@@ -23,8 +23,19 @@ function calculateResponsivePositions() {
     const centerX = viewportWidth / 2;
     const centerY = viewportHeight / 2;
     
-    // Center the single DMC icon
-    icons[0].position = { x: centerX - 80, y: centerY - 80 };
+    // Mobile layout
+    if (viewportWidth <= 768) {
+        icons[0].position = { x: centerX - 80, y: centerY - 150 };
+        if (icons[1]) {
+            icons[1].position = { x: centerX - 80, y: centerY + 50 };
+        }
+    } else {
+        // Desktop layout
+        icons[0].position = { x: centerX - 200, y: centerY - 100 };
+        if (icons[1]) {
+            icons[1].position = { x: centerX + 50, y: centerY - 50 };
+        }
+    }
 }
 
 let activeIcon = null;
