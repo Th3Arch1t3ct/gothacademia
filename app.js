@@ -2,30 +2,16 @@
 let icons = [
     {
         id: 1,
-        title: "Finished Songs",
+        title: "Music",
         image: "public/icons/Yeezy.png",
-        link: "finished-songs.html",
+        link: "music-eras.html",
         position: { x: 0, y: 0 },
     },
     {
         id: 2,
-        title: "Songs in Progress",
+        title: "The Ten",
         image: "public/icons/avatar.svg",
-        link: "songs-in-progress.html",
-        position: { x: 0, y: 0 },
-    },
-    {
-        id: 3,
-        title: "BEATS",
-        image: "public/icons/r2d2.gif",
-        link: "beats.html",
-        position: { x: 0, y: 0 },
-    },
-    {
-        id: 4,
-        title: "TRACK LIST",
-        image: "public/icons/Yeezy.png",
-        link: "track-list.html",
+        link: "the-ten.html",
         position: { x: 0, y: 0 },
     },
 ];
@@ -37,19 +23,14 @@ function calculateResponsivePositions() {
     const centerX = viewportWidth / 2;
     const centerY = viewportHeight / 2;
     
-    // Mobile layout - stacked vertically
+    // Mobile layout
     if (viewportWidth <= 768) {
-        icons[0].position = { x: centerX - 80, y: centerY - 300 };
-        icons[1].position = { x: centerX - 80, y: centerY - 100 };
-        icons[2].position = { x: centerX - 80, y: centerY + 100 };
-        icons[3].position = { x: centerX - 80, y: centerY + 300 };
+        icons[0].position = { x: centerX - 80, y: centerY - 150 };
+        icons[1].position = { x: centerX - 80, y: centerY + 50 };
     } else {
-        // Desktop layout - 2x2 grid
-        const spacing = 200;
-        icons[0].position = { x: centerX - spacing - 80, y: centerY - spacing/2 - 80 };
-        icons[1].position = { x: centerX + spacing - 80, y: centerY - spacing/2 - 80 };
-        icons[2].position = { x: centerX - spacing - 80, y: centerY + spacing/2 - 80 };
-        icons[3].position = { x: centerX + spacing - 80, y: centerY + spacing/2 - 80 };
+        // Desktop layout
+        icons[0].position = { x: centerX - 200, y: centerY - 100 };
+        icons[1].position = { x: centerX + 50, y: centerY - 50 };
     }
 }
 
