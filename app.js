@@ -2,9 +2,9 @@
 let icons = [
     {
         id: 1,
-        title: "DMC Demos",
+        title: "Music",
         image: "icons/Yeezy.png",
-        link: "/music",
+        link: "music.html",
         position: { x: 800, y: 100 },
     },
     {
