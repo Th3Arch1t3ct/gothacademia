@@ -21,6 +21,7 @@
         const txtColor = getContrastingColor(bgColor);
         document.write('<style>body, .container { background-color: ' + bgColor + ' !important; color: ' + txtColor + ' !important; }</style>');
         document.write('<style>.hex-display { position: fixed; top: 1rem; left: 1rem; font-family: monospace; font-size: 1.125rem; font-weight: 600; transition: all 0.3s; cursor: pointer; z-index: 50; color: ' + txtColor + '; } .hex-display:hover { opacity: 0.7; } </style>');
+        document.write('<style>.page-header { position: fixed; top: 1rem; left: 50%; transform: translateX(-50%); text-align: center; z-index: 100; color: ' + txtColor + '; } .page-header h1 { font-size: 1.5rem; font-weight: 600; margin: 0; } </style>');
     </script>
     <style>
         .back-button {
@@ -45,6 +46,9 @@
 <body>
     <div class="hex-display" id="hexDisplay"></div>
     <script>document.getElementById('hexDisplay').textContent = bgColor;</script>
+    <div class="page-header">
+        <h1>MUSIC ERAS</h1>
+    </div>
     <a href="index.html" class="back-button">← Back</a>
     <div class="container" id="mainContainer">
         <div class="icons-wrapper" id="iconsWrapper">
