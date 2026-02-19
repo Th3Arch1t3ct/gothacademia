@@ -20,6 +20,7 @@
         const bgColor = getRandomHexColor();
         const txtColor = getContrastingColor(bgColor);
         document.write('<style>body, .music-container { background-color: ' + bgColor + ' !important; color: ' + txtColor + ' !important; } .music-header h1, .music-header p, .music-card-title, .music-card-artist, .music-card-year { color: ' + txtColor + ' !important; }</style>');
+        document.write('<style>.hex-display { position: fixed; top: 1rem; left: 1rem; padding: 0.5rem 1rem; background: rgba(0,0,0,0.3); color: ' + txtColor + '; font-family: monospace; font-size: 0.875rem; border-radius: 4px; z-index: 1000; } </style>');
     </script>
     <style>
         .music-container {
@@ -32,7 +33,7 @@
 
         .back-button {
             position: fixed;
-            top: 2rem;
+            top: 4rem;
             left: 2rem;
             padding: 0.75rem 1.5rem;
             background: #000;
@@ -132,6 +133,8 @@
     </style>
 </head>
 <body>
+    <div class="hex-display" id="hexDisplay"></div>
+    <script>document.getElementById('hexDisplay').textContent = bgColor;</script>
     <div class="music-container">
         <a href="index.html" class="back-button">← Back</a>
         
