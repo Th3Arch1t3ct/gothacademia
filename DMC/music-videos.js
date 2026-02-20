@@ -3,7 +3,7 @@
 // Video data
 const videos = [
     {
-        title: "Kytka Final MV",
+        title: "Kytka",
         icon: "🎬",
         thumbnail: "../public/icons/kytka.JPEG",
         videoPath: "../public/videos/kytka final MV.mov"

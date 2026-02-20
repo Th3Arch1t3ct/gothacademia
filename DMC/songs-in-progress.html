@@ -22,18 +22,222 @@
         }
         const bgColor = getRandomHexColor();
         const txtColor = getContrastingColor(bgColor);
-        document.write('<style>body, .container { background-color: ' + bgColor + ' !important; color: ' + txtColor + ' !important; }</style>');
-        document.write('<style>.page-header { position: fixed; top: 1rem; left: 50%; transform: translateX(-50%); text-align: center; z-index: 100; color: ' + txtColor + '; } .page-header h1 { font-size: 1.5rem; font-weight: 600; margin: 0; } </style>');
+        // Make colors globally available
+        window.bgColor = bgColor;
+        window.txtColor = txtColor;
+        document.write('<style>body { background-color: ' + bgColor + ' !important; color: ' + txtColor + ' !important; overflow-y: auto; overflow-x: hidden; }</style>');
+        document.write('<style>.page-header { position: fixed; top: 1rem; left: 50%; transform: translateX(-50%); text-align: center; z-index: 100; color: ' + txtColor + '; width: 90%; } .page-header h1 { font-size: 1.5rem; font-weight: 600; margin: 0; white-space: nowrap; } @media (max-width: 768px) { .page-header h1 { font-size: 1.25rem; } } </style>');
     </script>
+    <style>
+        .media-container {
+            min-height: 100vh;
+            padding: 6rem 2rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+            padding: 0 1rem;
+        }
+
+        .media-card {
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+            touch-action: pan-y;
+            user-select: none;
+            -webkit-user-select: none;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .media-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .media-card:active {
+            transform: scale(0.98);
+        }
+
+        .media-card-image {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .media-card-content {
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .media-card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-player {
+            background: #1a1a1a;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .modal-player.minimized {
+            max-width: 350px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: #2a2a2a;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
+            margin: 0;
+        }
+
+        .modal-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .modal-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: rgba(255, 255, 255, 0.2);
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .modal-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-btn:active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-content {
+            padding: 2rem 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .modal-content audio {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .album-art {
+            width: 200px;
+            height: 200px;
+            border-radius: 8px;
+            background-size: cover;
+            background-position: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .modal-player.minimized .album-art {
+            width: 120px;
+            height: 120px;
+            font-size: 2.5rem;
+        }
+
+        .modal-player.minimized .modal-content {
+            padding: 1rem;
+        }
+    </style>
 </head>
 <body>
     <div class="page-header">
         <h1>SONGS IN PROGRESS</h1>
     </div>
-    <div class="container" id="mainContainer">
-        <div class="icons-wrapper" id="iconsWrapper">
-            <!-- Content coming soon -->
+    
+    <div class="media-container">
+        <div class="media-grid" id="mediaGrid">
+            <!-- Audio cards will be generated here -->
         </div>
     </div>
+
+    <!-- Modal Player -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-player" id="modalPlayer">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Audio Player</h3>
+                <div class="modal-controls">
+                    <button class="modal-btn" id="minimizeBtn" title="Minimize">−</button>
+                    <button class="modal-btn" id="closeBtn" title="Close">×</button>
+                </div>
+            </div>
+            <div class="modal-content" id="modalContent">
+                <!-- Audio player will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="songs-in-progress.js?v=1.0"></script>
 </body>
 </html>
