@@ -5,6 +5,7 @@ const videos = [
     {
         title: "Kytka Final MV",
         icon: "🎬",
+        thumbnail: "../public/icons/kytka.JPEG",
         videoPath: "../public/videos/kytka final MV.mov"
     }
     // Add more videos here in the future
@@ -27,7 +28,11 @@ function initializeMediaGrid() {
         card.setAttribute('data-video-index', index);
         
         card.innerHTML = `
-            <div class="media-card-image">${video.icon}</div>
+            <div class="media-card-image" style="background-image: url('${video.thumbnail}'); background-size: cover; background-position: center; position: relative;">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">
+                    ${video.icon}
+                </div>
+            </div>
             <div class="media-card-content">
                 <div class="media-card-title">${video.title}</div>
             </div>
