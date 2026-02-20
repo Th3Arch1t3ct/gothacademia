@@ -32,9 +32,9 @@ let icons = [
     },
     {
         id: 4,
-        title: "Track List",
+        title: "Files",
         image: basePath + "public/icons/newfolder.png",
-        link: "track-list.html",
+        link: "files.html",
         position: { x: 0, y: 0 },
     },
 ];
