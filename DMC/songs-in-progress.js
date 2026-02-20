@@ -15,6 +15,10 @@ const songs = [
 // Initialize media grid
 function initializeMediaGrid() {
     const mediaGrid = document.getElementById('mediaGrid');
+    if (!mediaGrid) return;
+    
+    // Clear existing content to prevent duplicates
+    mediaGrid.innerHTML = '';
     
     songs.forEach((song, index) => {
         const card = document.createElement('div');
