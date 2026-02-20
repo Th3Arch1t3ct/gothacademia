@@ -23,12 +23,28 @@ function calculateResponsivePositions() {
     const centerX = viewportWidth / 2;
     const centerY = viewportHeight / 2;
     
-    // Mobile layout
+    // Mobile layout - 2 column grid for future 4x4
     if (viewportWidth <= 768) {
-        icons[0].position = { x: centerX - 80, y: centerY - 150 };
-        if (icons[1]) {
-            icons[1].position = { x: centerX - 80, y: centerY + 50 };
-        }
+        const iconWidth = 160;
+        const iconHeight = 160;
+        const horizontalSpacing = 20;
+        const verticalSpacing = 40;
+        
+        // Calculate grid starting position
+        const gridWidth = (iconWidth * 2) + horizontalSpacing;
+        const startX = centerX - (gridWidth / 2);
+        const startY = centerY - 80;
+        
+        // Position icons in 2-column grid
+        icons.forEach((icon, index) => {
+            const col = index % 2; // 0 or 1 (left or right)
+            const row = Math.floor(index / 2); // 0, 1, 2, 3...
+            
+            icon.position = {
+                x: startX + (col * (iconWidth + horizontalSpacing)),
+                y: startY + (row * (iconHeight + verticalSpacing))
+            };
+        });
     } else {
         // Desktop layout
         icons[0].position = { x: centerX - 200, y: centerY - 100 };
