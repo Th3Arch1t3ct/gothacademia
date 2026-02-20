@@ -7,7 +7,7 @@ const songs = [
         title: "Honey-Boo-Boo",
         icon: "🎵",
         thumbnail: "../public/icons/kytka.JPEG",
-        audioPath: "../public/audio/2GA_Test1.wav"
+        audioPath: "../public/audio/2GA_Test1.mp3"
     }
     // Add more songs here in the future
 ];
@@ -84,8 +84,28 @@ function openAudioPlayer(songIndex) {
     // Create audio element
     const audioElement = document.createElement('audio');
     audioElement.controls = true;
-    audioElement.autoplay = true;
+    audioElement.preload = 'auto';
     audioElement.src = song.audioPath;
+    
+    // Error handling
+    audioElement.addEventListener('error', function(e) {
+        console.error('Audio load error:', e);
+        console.error('Audio path:', song.audioPath);
+        alert('Error loading audio file. Please check if the file exists.');
+    });
+    
+    // Log when audio is ready
+    audioElement.addEventListener('canplay', function() {
+        console.log('Audio ready to play');
+    });
+    
+    // Try to play (but catch errors on mobile)
+    audioElement.addEventListener('loadedmetadata', function() {
+        audioElement.play().catch(function(error) {
+            console.log('Autoplay prevented:', error);
+            // User will need to click play manually
+        });
+    });
     
     // Clear previous content and add audio
     modalContent.innerHTML = '';
