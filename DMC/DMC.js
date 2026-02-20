@@ -49,28 +49,38 @@ function calculateResponsivePositions() {
     // Mobile layout (portrait mode for iOS)
     if (viewportWidth <= 768) {
         // Account for header at top (approx 5rem)
-        const topOffset = 80; // Header space
-        const availableHeight = viewportHeight - topOffset;
-        const iconHeight = 160; // Approximate icon height with title
-        const totalIconsHeight = iconHeight * 4;
-        const spacing = (availableHeight - totalIconsHeight) / 5;
+        const topOffset = 100; // Header space
+        const iconWidth = 160; // Icon width
+        const iconHeight = 160; // Icon height with title
+        const horizontalSpacing = 20; // Space between columns
+        const verticalSpacing = 40; // Space between rows
         
-        // Center icons horizontally and distribute vertically
+        // 2x2 grid layout for mobile
+        // Calculate starting positions to center the grid
+        const gridWidth = (iconWidth * 2) + horizontalSpacing;
+        const gridHeight = (iconHeight * 2) + verticalSpacing;
+        const startX = (centerX) - (gridWidth / 2);
+        const startY = centerY - (gridHeight / 2) + 20;
+        
+        // Top left
         icons[0].position = { 
-            x: centerX - 80, 
-            y: topOffset + spacing + (iconHeight + spacing) * 0 
+            x: startX, 
+            y: startY 
         };
+        // Top right
         icons[1].position = { 
-            x: centerX - 80, 
-            y: topOffset + spacing + (iconHeight + spacing) * 1 
+            x: startX + iconWidth + horizontalSpacing, 
+            y: startY 
         };
+        // Bottom left
         icons[2].position = { 
-            x: centerX - 80, 
-            y: topOffset + spacing + (iconHeight + spacing) * 2 
+            x: startX, 
+            y: startY + iconHeight + verticalSpacing 
         };
+        // Bottom right
         icons[3].position = { 
-            x: centerX - 80, 
-            y: topOffset + spacing + (iconHeight + spacing) * 3 
+            x: startX + iconWidth + horizontalSpacing, 
+            y: startY + iconHeight + verticalSpacing 
         };
     } else {
         // Desktop layout - 2x2 grid
