@@ -20,6 +20,12 @@
             const brightness = (r * 299 + g * 587 + b * 114) / 1000;
             return brightness > 128 ? '#000000' : '#ffffff';
         }
+        function getBrightness(hexColor) {
+            const r = parseInt(hexColor.substr(1, 2), 16);
+            const g = parseInt(hexColor.substr(3, 2), 16);
+            const b = parseInt(hexColor.substr(5, 2), 16);
+            return (r * 299 + g * 587 + b * 114) / 1000;
+        }
         function lightenColor(hexColor, percent) {
             const r = parseInt(hexColor.substr(1, 2), 16);
             const g = parseInt(hexColor.substr(3, 2), 16);
@@ -31,9 +37,22 @@
             
             return '#' + [newR, newG, newB].map(x => x.toString(16).padStart(2, '0')).join('');
         }
+        function darkenColor(hexColor, percent) {
+            const r = parseInt(hexColor.substr(1, 2), 16);
+            const g = parseInt(hexColor.substr(3, 2), 16);
+            const b = parseInt(hexColor.substr(5, 2), 16);
+            
+            const newR = Math.max(0, Math.floor(r * (1 - percent)));
+            const newG = Math.max(0, Math.floor(g * (1 - percent)));
+            const newB = Math.max(0, Math.floor(b * (1 - percent)));
+            
+            return '#' + [newR, newG, newB].map(x => x.toString(16).padStart(2, '0')).join('');
+        }
         const bgColor = getRandomHexColor();
         const txtColor = getContrastingColor(bgColor);
-        const linkColor = lightenColor(bgColor, 0.5);
+        const brightness = getBrightness(bgColor);
+        // If background is dark, lighten links. If light, darken links.
+        const linkColor = brightness < 128 ? lightenColor(bgColor, 0.5) : darkenColor(bgColor, 0.5);
         document.write('<style>body, .container { background-color: ' + bgColor + ' !important; color: ' + txtColor + ' !important; }</style>');
         document.write('<style>.page-header { position: fixed; top: 1rem; left: 50%; transform: translateX(-50%); text-align: center; z-index: 100; color: ' + txtColor + '; width: 90%; } .page-header h1 { font-size: 1.5rem; font-weight: 600; margin: 0; white-space: nowrap; } .page-header a { color: ' + linkColor + '; text-decoration: underline; text-shadow: 0 0 10px rgba(255,255,255,0.3); transition: all 0.2s; } .page-header a:hover { opacity: 0.8; text-shadow: 0 0 15px rgba(255,255,255,0.5); } @media (max-width: 768px) { .page-header h1 { font-size: 1.25rem; } } </style>');
     </script>
