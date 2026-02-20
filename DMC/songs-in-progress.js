@@ -7,7 +7,7 @@ const songs = [
         title: "Honey-Boo-Boo",
         icon: "🎵",
         thumbnail: "../public/icons/kytka.JPEG",
-        audioPath: "../public/audio/1GA_Kytka.wav"
+        audioPath: "../public/audio/2GA_Test1.wav"
     }
     // Add more songs here in the future
 ];
