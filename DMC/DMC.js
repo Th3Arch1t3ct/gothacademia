@@ -13,7 +13,7 @@ let icons = [
         id: 1,
         title: "Music/Videos",
         image: basePath + "public/icons/folderzip.png",
-        link: "finished-songs.html",
+        link: "music-videos.html",
         position: { x: 0, y: 0 },
     },
     {
