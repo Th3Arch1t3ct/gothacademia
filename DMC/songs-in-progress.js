@@ -4,32 +4,28 @@
 let songs = [
     {
         id: 1,
-        title: "Honey-Boo-Boo I",
-        icon: "☮︎",
+        title: "2GA I",
         thumbnail: "../public/icons/honeybooboovegan.png",
         audioPath: "../public/audio/2GA_Test1.mp3",
         position: { x: 0, y: 0 }
     },
     {
         id: 2,
-        title: "Honey-Boo-Boo II",
-        icon: "☮︎",
+        title: "2GA II",
         thumbnail: "../public/icons/honeybooboovegan.png",
         audioPath: "../public/audio/2GA_Test2.mp3",
         position: { x: 0, y: 0 }
     },
     {
         id: 3,
-        title: "3GA TEST I",
-        icon: "☮︎",
+        title: "3GA I",
         thumbnail: "../public/icons/CD.png",
         audioPath: "../public/audio/3GA_SoundTest.mp3",
         position: { x: 0, y: 0 }
     },
     {
         id: 4,
-        title: "3GA TEST II",
-        icon: "☮︎",
+        title: "3GA II",
         thumbnail: "../public/icons/CD.png",
         audioPath: "../public/audio/3GA_Vocal_Test2.mp3",
         position: { x: 0, y: 0 }
