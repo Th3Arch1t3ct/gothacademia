@@ -33,45 +33,103 @@ const songs = [
     // Add more songs here in the future
 ];
 
-// Initialize media grid
+// Calculate icon positions
+function calculateIconPositions() {
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const centerX = viewportWidth / 2;
+    const centerY = viewportHeight / 2;
+    
+    const positions = [];
+    
+    if (viewportWidth <= 768) {
+        // Mobile: 2 column grid
+        const iconSpacing = 140;
+        const startX = centerX - iconSpacing;
+        const startY = centerY - (Math.ceil(songs.length / 2) * 90);
+        
+        songs.forEach((song, index) => {
+            const col = index % 2;
+            const row = Math.floor(index / 2);
+            positions.push({
+                x: startX + (col * iconSpacing * 2),
+                y: startY + (row * 180)
+            });
+        });
+    } else {
+        // Desktop: grid layout with spacing
+        const cols = Math.min(3, songs.length);
+        const iconSpacing = 200;
+        const startX = centerX - ((cols - 1) * iconSpacing / 2);
+        const startY = centerY - 100;
+        
+        songs.forEach((song, index) => {
+            const col = index % cols;
+            const row = Math.floor(index / cols);
+            positions.push({
+                x: startX + (col * iconSpacing),
+                y: startY + (row * 200)
+            });
+        });
+    }
+    
+    return positions;
+}
+
+// Initialize icon grid
 function initializeMediaGrid() {
-    const mediaGrid = document.getElementById('mediaGrid');
-    if (!mediaGrid) return;
+    const iconsWrapper = document.getElementById('iconsWrapper');
+    if (!iconsWrapper) return;
     
     // Clear existing content to prevent duplicates
-    mediaGrid.innerHTML = '';
+    iconsWrapper.innerHTML = '';
+    
+    const positions = calculateIconPositions();
+    const textColor = window.txtColor || '#ffffff';
     
     songs.forEach((song, index) => {
-        const card = document.createElement('div');
-        card.className = 'media-card';
-        card.setAttribute('data-song-index', index);
+        const icon = document.createElement('div');
+        icon.className = 'clickable-icon';
+        icon.setAttribute('data-song-index', index);
+        icon.style.left = `${positions[index].x}px`;
+        icon.style.top = `${positions[index].y}px`;
         
-        card.innerHTML = `
-            <div class="media-card-image" style="background-image: url('${song.thumbnail}'); background-size: cover; background-position: center; position: relative;">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">
-                    ${song.icon}
+        icon.innerHTML = `
+            <div class="icon-content">
+                <div class="icon-image-wrapper">
+                    <img 
+                        src="${song.thumbnail}" 
+                        alt="${song.title}"
+                        class="icon-image"
+                        draggable="false"
+                    />
                 </div>
-            </div>
-            <div class="media-card-content">
-                <div class="media-card-title">${song.title}</div>
+                <span class="icon-title" style="color: ${textColor}">
+                    ${song.title}
+                </span>
             </div>
         `;
         
         // Add click handler (non-draggable, just clickable)
-        card.addEventListener('click', function(e) {
+        icon.addEventListener('click', function(e) {
             e.preventDefault();
             openAudioPlayer(index);
         });
         
         // Touch support for mobile
-        card.addEventListener('touchend', function(e) {
+        icon.addEventListener('touchend', function(e) {
             e.preventDefault();
             openAudioPlayer(index);
         });
         
-        mediaGrid.appendChild(card);
+        iconsWrapper.appendChild(icon);
     });
 }
+
+// Recalculate positions on window resize
+window.addEventListener('resize', function() {
+    initializeMediaGrid();
+});
 
 // Modal player state
 let currentSongIndex = null;
