@@ -1,37 +1,13 @@
-// Songs in Progress JavaScript - Draggable icons with persistent draggable player
+// Music Videos JavaScript - Draggable icons with persistent draggable player
 
-// Audio data with positions
-let songs = [
+// Video data with positions
+let videos = [
     {
         id: 1,
-        title: "Honey-Boo-Boo I",
-        icon: "☮︎",
-        thumbnail: "../public/icons/honeybooboovegan.png",
-        audioPath: "../public/audio/2GA_Test1.mp3",
-        position: { x: 0, y: 0 }
-    },
-    {
-        id: 2,
-        title: "Honey-Boo-Boo II",
-        icon: "☮︎",
-        thumbnail: "../public/icons/honeybooboovegan.png",
-        audioPath: "../public/audio/2GA_Test2.mp3",
-        position: { x: 0, y: 0 }
-    },
-    {
-        id: 3,
-        title: "3GA TEST I",
-        icon: "☮︎",
-        thumbnail: "../public/icons/CD.png",
-        audioPath: "../public/audio/3GA_SoundTest.mp3",
-        position: { x: 0, y: 0 }
-    },
-    {
-        id: 4,
-        title: "3GA TEST II",
-        icon: "☮︎",
-        thumbnail: "../public/icons/CD.png",
-        audioPath: "../public/audio/3GA_Vocal_Test2.mp3",
+        title: "Kytka",
+        icon: "🎬",
+        thumbnail: "../public/icons/kytka.JPEG",
+        videoPath: "../public/videos/kytka final MV.mov",
         position: { x: 0, y: 0 }
     }
 ];
@@ -49,28 +25,28 @@ function calculateResponsivePositions() {
         const iconSpacing = 40;
         const totalWidth = (iconWidth * 2) + iconSpacing;
         const startX = centerX - totalWidth / 2;
-        const startY = Math.max(100, centerY - (Math.ceil(songs.length / 2) * 90));
+        const startY = Math.max(100, centerY - (Math.ceil(videos.length / 2) * 90));
         
-        songs.forEach((song, index) => {
+        videos.forEach((video, index) => {
             const col = index % 2;
             const row = Math.floor(index / 2);
-            song.position = {
+            video.position = {
                 x: startX + (col * (iconWidth + iconSpacing)),
                 y: startY + (row * 160)
             };
         });
     } else {
         // Desktop: grid layout
-        const cols = Math.min(3, songs.length);
+        const cols = Math.min(3, videos.length);
         const iconSpacing = 200;
         const totalWidth = (cols - 1) * iconSpacing;
         const startX = centerX - totalWidth / 2;
         const startY = centerY - 100;
         
-        songs.forEach((song, index) => {
+        videos.forEach((video, index) => {
             const col = index % cols;
             const row = Math.floor(index / cols);
-            song.position = {
+            video.position = {
                 x: startX + (col * iconSpacing),
                 y: startY + (row * 200)
             };
@@ -96,33 +72,33 @@ function renderIcons() {
 
     iconsWrapper.innerHTML = '';
 
-    songs.forEach((song) => {
+    videos.forEach((video) => {
         const iconDiv = document.createElement('div');
         iconDiv.className = 'draggable-icon';
-        iconDiv.id = `icon-${song.id}`;
-        iconDiv.style.left = `${song.position.x}px`;
-        iconDiv.style.top = `${song.position.y}px`;
-        iconDiv.dataset.iconId = song.id.toString();
+        iconDiv.id = `icon-${video.id}`;
+        iconDiv.style.left = `${video.position.x}px`;
+        iconDiv.style.top = `${video.position.y}px`;
+        iconDiv.dataset.iconId = video.id.toString();
 
         iconDiv.innerHTML = `
             <div class="icon-content">
                 <div class="icon-image-wrapper">
                     <img 
-                        src="${song.thumbnail}" 
-                        alt="${song.title}"
+                        src="${video.thumbnail}" 
+                        alt="${video.title}"
                         class="icon-image"
                         draggable="false"
                     />
                 </div>
                 <span class="icon-title" style="color: ${textColor}">
-                    ${song.title}
+                    ${video.title}
                 </span>
             </div>
         `;
 
-        iconDiv.addEventListener('mousedown', (e) => handleMouseDown(song.id, e));
-        iconDiv.addEventListener('touchstart', (e) => handleTouchStart(song.id, e), { passive: false });
-        iconDiv.addEventListener('click', (e) => handleIconClick(e, song.id));
+        iconDiv.addEventListener('mousedown', (e) => handleMouseDown(video.id, e));
+        iconDiv.addEventListener('touchstart', (e) => handleTouchStart(video.id, e), { passive: false });
+        iconDiv.addEventListener('click', (e) => handleIconClick(e, video.id));
 
         iconsWrapper.appendChild(iconDiv);
     });
@@ -167,25 +143,25 @@ function handleMouseMove(e) {
             hasMoved = true;
         }
 
-        songs = songs.map(song => {
-            if (song.id === activeIcon) {
+        videos = videos.map(video => {
+            if (video.id === activeIcon) {
                 return {
-                    ...song,
+                    ...video,
                     position: {
-                        x: song.position.x + deltaX,
-                        y: song.position.y + deltaY
+                        x: video.position.x + deltaX,
+                        y: video.position.y + deltaY
                     }
                 };
             }
-            return song;
+            return video;
         });
 
         const iconElement = document.getElementById(`icon-${activeIcon}`);
         if (iconElement) {
-            const updatedSong = songs.find(song => song.id === activeIcon);
-            if (updatedSong) {
-                iconElement.style.left = `${updatedSong.position.x}px`;
-                iconElement.style.top = `${updatedSong.position.y}px`;
+            const updatedVideo = videos.find(video => video.id === activeIcon);
+            if (updatedVideo) {
+                iconElement.style.left = `${updatedVideo.position.x}px`;
+                iconElement.style.top = `${updatedVideo.position.y}px`;
             }
         }
 
@@ -208,25 +184,25 @@ function handleTouchMove(e) {
         }
         
         if (isDragging) {
-            songs = songs.map(song => {
-                if (song.id === activeIcon) {
+            videos = videos.map(video => {
+                if (video.id === activeIcon) {
                     return {
-                        ...song,
+                        ...video,
                         position: {
-                            x: song.position.x + deltaX,
-                            y: song.position.y + deltaY
+                            x: video.position.x + deltaX,
+                            y: video.position.y + deltaY
                         }
                     };
                 }
-                return song;
+                return video;
             });
 
             const iconElement = document.getElementById(`icon-${activeIcon}`);
             if (iconElement) {
-                const updatedSong = songs.find(song => song.id === activeIcon);
-                if (updatedSong) {
-                    iconElement.style.left = `${updatedSong.position.x}px`;
-                    iconElement.style.top = `${updatedSong.position.y}px`;
+                const updatedVideo = videos.find(video => video.id === activeIcon);
+                if (updatedVideo) {
+                    iconElement.style.left = `${updatedVideo.position.x}px`;
+                    iconElement.style.top = `${updatedVideo.position.y}px`;
                 }
             }
 
@@ -250,9 +226,9 @@ function handleMouseUp() {
 // Handle touch end
 function handleTouchEnd(e) {
     if (activeIcon !== null && !hasMoved && totalMovement < 5) {
-        const song = songs.find(s => s.id === activeIcon);
-        if (song) {
-            openAudioPlayer(song.id);
+        const video = videos.find(v => v.id === activeIcon);
+        if (video) {
+            openVideoPlayer(video.id);
         }
     }
     
@@ -271,7 +247,7 @@ function handleTouchEnd(e) {
 // Handle icon click
 function handleIconClick(e, id) {
     if (!hasMoved) {
-        openAudioPlayer(id);
+        openVideoPlayer(id);
     } else {
         e.preventDefault();
     }
@@ -285,6 +261,7 @@ let playerDragState = {
     offsetX: 0,
     offsetY: 0
 };
+let isFullscreen = false;
 
 // Get modal elements
 const modalOverlay = document.getElementById('modalOverlay');
@@ -293,84 +270,83 @@ const modalTitle = document.getElementById('modalTitle');
 const modalContent = document.getElementById('modalContent');
 const modalHeader = document.querySelector('.modal-header');
 const minimizeBtn = document.getElementById('minimizeBtn');
+const expandBtn = document.getElementById('expandBtn');
 const closeBtn = document.getElementById('closeBtn');
 
-// Open audio player
-function openAudioPlayer(songId) {
-    const song = songs.find(s => s.id === songId);
-    if (!song) return;
+// Open video player
+function openVideoPlayer(videoId) {
+    const video = videos.find(v => v.id === videoId);
+    if (!video) return;
     
     // Update title
-    modalTitle.textContent = song.title;
+    modalTitle.textContent = video.title;
     
-    // Create album art
-    const albumArt = document.createElement('div');
-    albumArt.className = 'album-art';
-    if (song.thumbnail) {
-        albumArt.style.backgroundImage = `url('${song.thumbnail}')`;
-    } else {
-        albumArt.textContent = song.icon;
-    }
+    // Create video element
+    const videoElement = document.createElement('video');
+    videoElement.controls = true;
+    videoElement.autoplay = true;
+    videoElement.src = video.videoPath;
+    videoElement.id = 'currentVideo';
     
-    // Create audio element
-    const audioElement = document.createElement('audio');
-    audioElement.controls = true;
-    audioElement.preload = 'auto';
-    audioElement.src = song.audioPath;
-    audioElement.id = 'currentAudio';
-    
-    // Error handling
-    audioElement.addEventListener('error', function(e) {
-        console.error('Audio load error:', e);
-        alert('Error loading audio file.');
-    });
-    
-    // Try to play
-    audioElement.addEventListener('loadedmetadata', function() {
-        audioElement.play().catch(function(error) {
-            console.log('Autoplay prevented:', error);
-        });
-    });
-    
-    // Clear previous content and add audio
+    // Clear previous content and add video
     modalContent.innerHTML = '';
-    modalContent.appendChild(albumArt);
-    modalContent.appendChild(audioElement);
+    modalContent.appendChild(videoElement);
     
     // Show modal
     modalOverlay.classList.add('active');
+    isFullscreen = false;
+    modalPlayer.classList.remove('fullscreen', 'minimized');
     
     // Save to localStorage
-    savePlayerState(song.id, audioElement.currentTime);
+    savePlayerState(video.id, videoElement.currentTime);
 }
 
-// Close audio player
-function closeAudioPlayer() {
+// Close video player
+function closeVideoPlayer() {
     modalOverlay.classList.remove('active');
     
-    const audio = modalContent.querySelector('audio');
-    if (audio) {
-        audio.pause();
-        audio.removeAttribute('src');
-        audio.load();
+    const video = modalContent.querySelector('video');
+    if (video) {
+        video.pause();
+        video.src = '';
     }
     modalContent.innerHTML = '';
     
     // Clear localStorage
     localStorage.removeItem('currentAudioPlayer');
-    modalPlayer.classList.remove('minimized');
+    isFullscreen = false;
+    modalPlayer.classList.remove('fullscreen', 'minimized');
+}
+
+// Toggle fullscreen
+function toggleFullscreen() {
+    isFullscreen = !isFullscreen;
+    
+    if (isFullscreen) {
+        modalPlayer.classList.add('fullscreen');
+        modalPlayer.classList.remove('minimized');
+        expandBtn.textContent = '❐';
+    } else {
+        modalPlayer.classList.remove('fullscreen');
+        expandBtn.textContent = '⛶';
+    }
 }
 
 // Toggle minimize
 function toggleMinimize() {
+    if (isFullscreen) {
+        isFullscreen = false;
+        expandBtn.textContent = '⛶';
+    }
     modalPlayer.classList.toggle('minimized');
+    modalPlayer.classList.remove('fullscreen');
 }
 
 // Save player state
-function savePlayerState(songId, currentTime) {
+function savePlayerState(videoId, currentTime) {
     const state = {
-        type: 'audio',
-        songId: songId,
+        type: 'video',
+        videoId: videoId,
         currentTime: currentTime || 0,
         page: window.location.pathname
     };
@@ -384,13 +360,13 @@ function restorePlayerState() {
     
     try {
         const state = JSON.parse(stateStr);
-        if (state.type === 'audio') {
-            const song = songs.find(s => s.id === state.songId);
-            if (song) {
-                openAudioPlayer(song.id);
-                const audio = document.getElementById('currentAudio');
-                if (audio && state.currentTime) {
-                    audio.currentTime = state.currentTime;
+        if (state.type === 'video') {
+            const video = videos.find(v => v.id === state.videoId);
+            if (video) {
+                openVideoPlayer(video.id);
+                const videoEl = document.getElementById('currentVideo');
+                if (videoEl && state.currentTime) {
+                    videoEl.currentTime = state.currentTime;
                 }
             }
         }
@@ -402,13 +378,13 @@ function restorePlayerState() {
 // Update player state periodically
 function startPlayerStateUpdates() {
     setInterval(() => {
-        const audio = document.getElementById('currentAudio');
-        if (audio && !audio.paused) {
-            const currentSongId = songs.find(s => 
-                modalTitle.textContent === s.title
+        const video = document.getElementById('currentVideo');
+        if (video && !video.paused) {
+            const currentVideoId = videos.find(v => 
+                modalTitle.textContent === v.title
             )?.id;
-            if (currentSongId) {
-                savePlayerState(currentSongId, audio.currentTime);
+            if (currentVideoId) {
+                savePlayerState(currentVideoId, video.currentTime);
             }
         }
     }, 1000);
@@ -418,6 +394,7 @@ function startPlayerStateUpdates() {
 function makePlayerDraggable() {
     modalHeader.addEventListener('mousedown', function(e) {
         if (e.target.closest('.modal-btn')) return;
+        if (isFullscreen) return;
         
         playerDragState.isDragging = true;
         playerDragState.startX = e.clientX;
@@ -437,6 +414,7 @@ function makePlayerDraggable() {
     
     modalHeader.addEventListener('touchstart', function(e) {
         if (e.target.closest('.modal-btn')) return;
+        if (isFullscreen) return;
         
         playerDragState.isDragging = true;
         playerDragState.startX = e.touches[0].clientX;
@@ -456,7 +434,7 @@ function makePlayerDraggable() {
 }
 
 document.addEventListener('mousemove', function(e) {
-    if (playerDragState.isDragging) {
+    if (playerDragState.isDragging && !isFullscreen) {
         const deltaX = e.clientX - playerDragState.startX;
         const deltaY = e.clientY - playerDragState.startY;
         
@@ -466,7 +444,7 @@ document.addEventListener('mousemove', function(e) {
 });
 
 document.addEventListener('touchmove', function(e) {
-    if (playerDragState.isDragging) {
+    if (playerDragState.isDragging && !isFullscreen) {
         const deltaX = e.touches[0].clientX - playerDragState.startX;
         const deltaY = e.touches[0].clientY - playerDragState.startY;
         
@@ -501,9 +479,14 @@ minimizeBtn.addEventListener('click', function(e) {
     toggleMinimize();
 });
 
+expandBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    toggleFullscreen();
+});
+
 closeBtn.addEventListener('click', function(e) {
     e.stopPropagation();
-    closeAudioPlayer();
+    closeVideoPlayer();
 });
 
 minimizeBtn.addEventListener('touchend', function(e) {
@@ -512,15 +495,21 @@ minimizeBtn.addEventListener('touchend', function(e) {
     toggleMinimize();
 });
 
+expandBtn.addEventListener('touchend', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleFullscreen();
+});
+
 closeBtn.addEventListener('touchend', function(e) {
     e.preventDefault();
     e.stopPropagation();
-    closeAudioPlayer();
+    closeVideoPlayer();
 });
 
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
-        closeAudioPlayer();
+        closeVideoPlayer();
     }
 });
 
@@ -545,13 +534,13 @@ window.addEventListener('resize', function() {
 
 // Save state before unload
 window.addEventListener('beforeunload', function() {
-    const audio = document.getElementById('currentAudio');
-    if (audio && !audio.paused) {
-        const currentSongId = songs.find(s => 
-            modalTitle.textContent === s.title
+    const video = document.getElementById('currentVideo');
+    if (video && !video.paused) {
+        const currentVideoId = videos.find(v => 
+            modalTitle.textContent === v.title
         )?.id;
-        if (currentSongId) {
-            savePlayerState(currentSongId, audio.currentTime);
+        if (currentVideoId) {
+            savePlayerState(currentVideoId, video.currentTime);
         }
     }
 });
