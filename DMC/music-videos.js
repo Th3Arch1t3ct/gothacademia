@@ -19,29 +19,39 @@ function calculateResponsivePositions() {
     const centerX = viewportWidth / 2;
     const centerY = viewportHeight / 2;
     
+    // Mobile layout - 2 column grid
     if (viewportWidth <= 768) {
-        // Mobile: 2 column grid
-        const iconWidth = 100;
-        const iconSpacing = 40;
-        const totalWidth = (iconWidth * 2) + iconSpacing;
-        const startX = centerX - totalWidth / 2;
-        const startY = Math.max(100, centerY - (Math.ceil(videos.length / 2) * 90));
+        const iconWidth = 160;
+        const iconHeight = 160;
+        const horizontalSpacing = 20;
+        const verticalSpacing = 40;
         
+        // Calculate grid starting position
+        const gridWidth = (iconWidth * 2) + horizontalSpacing;
+        const startX = centerX - (gridWidth / 2);
+        const startY = centerY - 80;
+        
+        // Position icons in 2-column grid
         videos.forEach((video, index) => {
-            const col = index % 2;
-            const row = Math.floor(index / 2);
+            const col = index % 2; // 0 or 1 (left or right)
+            const row = Math.floor(index / 2); // 0, 1, 2, 3...
+            
             video.position = {
-                x: startX + (col * (iconWidth + iconSpacing)),
-                y: startY + (row * 160)
+                x: startX + (col * (iconWidth + horizontalSpacing)),
+                y: startY + (row * (iconHeight + verticalSpacing))
             };
         });
     } else {
-        // Desktop: grid layout
+        // Desktop layout - center based on number of icons
         const cols = Math.min(3, videos.length);
-        const iconSpacing = 200;
-        const totalWidth = (cols - 1) * iconSpacing;
-        const startX = centerX - totalWidth / 2;
-        const startY = centerY - 100;
+        const rows = Math.ceil(videos.length / cols);
+        const iconSpacing = 250;
+        
+        // Calculate total grid dimensions
+        const gridWidth = (cols - 1) * iconSpacing;
+        const gridHeight = (rows - 1) * 200;
+        const startX = centerX - (gridWidth / 2);
+        const startY = centerY - (gridHeight / 2);
         
         videos.forEach((video, index) => {
             const col = index % cols;
